@@ -74,7 +74,7 @@ class ComponentWithProps extends React.Component {
  * @type {{firstName: (*), lastName: *}}
  */
 ComponentWithProps.propTypes = {
-    firstName: React.PropTypes.string.required,
+    firstName: React.PropTypes.string.isRequired,
     lastName: React.PropTypes.string
 };
 
@@ -86,10 +86,165 @@ ComponentWithProps.defaultProps = {
     lastName: "Wei"
 };
 
+
+/**
+ * 为组件增加状态，在 render 中将状态和 input 元素绑定。
+ * 在input onChange 事件触发时，触发 update 方法，达到单向绑定
+ */
+class ComponentStateWithSetState extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            txt: "this is the state txt"
+        }
+    }
+
+    update(e) {
+        this.setState({
+            txt: e.target.value,
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>ComponentStateWithSetState</h1>
+                <h2>{this.state.txt}</h2>
+                <input type="text" onChange={this.update.bind(this)}></input>
+            </div>
+        )
+    }
+}
+
+/**
+ * 使用子组件绑定父Component的state
+ */
+class ComponentStateChangeByChildComponent extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            txt: "this is the state txt"
+        }
+    }
+
+    update(e) {
+        this.setState({
+            txt: e.target.value,
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>ComponentStateChangeByChildComponent</h1>
+                <h2>{this.state.txt}</h2>
+                <Widget update={this.update.bind(this)}></Widget>
+            </div>
+        )
+    }
+}
+
+const Widget = (props) =>
+    <input type="text" onChange={props.update}/>;
+
+
+/**
+ * 通过 props.children 包含子组件
+ */
+class AccessNestedDataWithReactPropsChildren extends React.Component {
+
+    render() {
+        return (
+            <div>
+                <h1>AccessNestedDataWithReactPropsChildren</h1>
+                <Button>I<Heart/><Heart/>React</Button>
+            </div>
+        )
+    }
+}
+
+const Button = (props) => <button>{props.children}</button>
+
+class Heart extends React.Component {
+    render() {
+        return <span>&hearts;</span>
+    }
+}
+
+/**
+ * 通过 propTypes 对属性进行校验
+ */
+class ComponentWithPropTypesValidation extends React.Component {
+    render() {
+        return (
+            <div>
+                <h1>ComponentWithPropTypesValidation</h1>
+                <Title text="isRequired"/>
+                <Title text="prop length < 15"/>
+            </div>
+        )
+    }
+}
+
+const Title = (props) => <p>{props.text}</p>;
+
+Title.propTypes = {
+    text(props, propName, component){
+        if (!(propName in props)) {
+            return new Error(`missing prop ${propName}`)
+        }
+        if (props[propName].length > 15) {
+            return new Error(`${propName} length must less than 15`);
+        }
+    }
+};
+
+/**
+ * 使用 React 的事件绑定
+ */
+class ComponentUseReactEventSystem extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            eventName: "-----"
+        };
+        this.update = this.update.bind(this);
+    }
+
+    update(e) {
+        this.setState({
+            eventName: e.type
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>ComponentUseReactEventSystem</h1>
+                <textarea
+                    onKeyPress={this.update}
+                    onDoubleClick={this.update}
+                    onBlur={this.update}
+                    onFocus={this.update}
+                    cols="30"
+                    rows="5"
+                />
+                <p>{this.state.eventName}</p>
+            </div>
+        )
+    }
+}
+
 export {
     StatelessComponent,
     ComponentExtendReact,
     RenderComponentUseReactCreateElement,
     MultipleTagComponent,
-    ComponentWithProps
+    ComponentWithProps,
+    ComponentStateWithSetState,
+    ComponentStateChangeByChildComponent,
+    AccessNestedDataWithReactPropsChildren,
+    ComponentWithPropTypesValidation,
+    ComponentUseReactEventSystem
 }

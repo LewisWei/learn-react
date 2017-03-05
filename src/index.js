@@ -26,3 +26,28 @@ ReactDOM.render(
     <App.ComponentWithProps firstName="Lewis"/>,
     document.getElementById('ComponentWithProps')
 );
+
+ReactDOM.render(
+    <App.ComponentStateWithSetState/>,
+    document.getElementById('ComponentStateWithSetState')
+);
+
+ReactDOM.render(
+    <App.ComponentStateWithSetState/>,
+    document.getElementById('ComponentStateChangeByChildComponent')
+);
+
+ReactDOM.render(
+    <App.AccessNestedDataWithReactPropsChildren/>,
+    document.getElementById('AccessNestedDataWithReactPropsChildren')
+);
+
+ReactDOM.render(
+    <App.ComponentWithPropTypesValidation/>,
+    document.getElementById('ComponentWithPropTypesValidation')
+);
+
+ReactDOM.render(
+    <App.ComponentUseReactEventSystem/>,
+    document.getElementById('ComponentUseReactEventSystem')
+);
