@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 /**
@@ -236,6 +236,63 @@ class ComponentUseReactEventSystem extends React.Component {
     }
 }
 
+
+/**
+ * 使用 refs 来管理组件的关系
+ */
+class ComponentRefs extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            a: "",
+            b: ""
+        }
+    }
+
+    update() {
+        this.setState({
+            a: this.refs.a.value,
+            b: this.b.refs.input.value
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <input
+                    ref="a"
+                    type="text"
+                    onChange={this.update.bind(this)}
+                />
+                {this.state.a}
+                <br/>
+                <Input
+                    ref={component => this.b = component}
+                    update={this.update.bind(this)}
+                />
+                {this.state.b}
+            </div>
+        )
+    }
+}
+
+/**
+ * 也可在 ref 中使用 {component => this.属性 =component}组合其他组件的 ref
+ */
+class Input extends React.Component {
+    render() {
+        return (
+            <div>
+                <input
+                    ref="input"
+                    type="text"
+                    onChange={this.props.update}
+                />
+            </div>
+        )
+    }
+}
+
 export {
     StatelessComponent,
     ComponentExtendReact,
@@ -246,5 +303,6 @@ export {
     ComponentStateChangeByChildComponent,
     AccessNestedDataWithReactPropsChildren,
     ComponentWithPropTypesValidation,
-    ComponentUseReactEventSystem
+    ComponentUseReactEventSystem,
+    ComponentRefs
 }

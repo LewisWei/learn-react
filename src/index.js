@@ -51,3 +51,8 @@ ReactDOM.render(
     <App.ComponentUseReactEventSystem/>,
     document.getElementById('ComponentUseReactEventSystem')
 );
+
+ReactDOM.render(
+    <App.ComponentRefs/>,
+    document.getElementById('ComponentRefs')
+);
