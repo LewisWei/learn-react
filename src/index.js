@@ -61,3 +61,8 @@ ReactDOM.render(
     <App.ComponentWrapper/>,
     document.getElementById('ComponentWrapper')
 );
+
+ReactDOM.render(
+    <App.ComponentUpdatesWhenNewPropsReceive/>,
+    document.getElementById('ComponentUpdatesWhenNewPropsReceive')
+);

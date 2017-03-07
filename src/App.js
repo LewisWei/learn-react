@@ -359,6 +359,66 @@ class ComponentWrapper extends React.Component {
     }
 }
 
+/**
+ * 根据属性的变化来控制组件是否需要更新
+ */
+class ComponentUpdatesWhenNewPropsReceive extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            increasing: false
+        };
+        this.update = this.update.bind(this);
+    }
+
+    update() {
+        // 点击时重新渲染组件并且属性值自增1
+        ReactDOM.render(
+            <ComponentUpdatesWhenNewPropsReceive val={this.props.val + 1}/>,
+            document.getElementById("ComponentUpdatesWhenNewPropsReceive"));
+    }
+
+    render() {
+        console.log(this.state.increasing);
+        return <div>
+            <button onClick={this.update}>{this.props.val}</button>
+        </div>
+    }
+
+    /**
+     * 组件的属性被修改后，在受到此改变前触发。早于 render
+     * @param nextProps
+     */
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            increasing: nextProps.val > this.props.val
+        })
+    }
+
+    /**
+     * 组件渲染前触发，控制组件是否可以更新。早于 render
+     * @param nextProps
+     * @param nextState
+     * @returns {boolean} true 渲染 false 不渲染
+     */
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps.val % 5 === 0;
+    }
+
+    /**
+     * 组件更新之后触发。晚于render
+     * @param prevProps
+     * @param prevState
+     */
+    componentDidUpdate(prevProps, prevState) {
+        console.log(`prevProps.val= ${prevProps.val}`);
+    }
+}
+
+ComponentUpdatesWhenNewPropsReceive.defaultProps = {
+    val: 0
+};
+
 export {
     StatelessComponent,
     ComponentExtendReact,
@@ -371,5 +431,6 @@ export {
     ComponentWithPropTypesValidation,
     ComponentUseReactEventSystem,
     ComponentRefs,
-    ComponentWrapper
+    ComponentWrapper,
+    ComponentUpdatesWhenNewPropsReceive
 }
