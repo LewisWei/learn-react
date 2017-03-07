@@ -1,5 +1,5 @@
 import React from "react";
-
+import ReactDOM from "react-dom";
 
 /**
  * 创建 stateless component
@@ -293,6 +293,66 @@ class Input extends React.Component {
     }
 }
 
+/**
+ * Component 加载到 DOM 中的生命周期
+ */
+class ComponentForMount extends React.Component {
+    constructor() {
+        super();
+        this.state = {times: 0};
+        this.update = this.update.bind(this);
+    }
+
+    update() {
+        this.setState({
+            times: this.state.times + 1
+        });
+    }
+
+    // 第一个阶段：装载至DOM前触发
+    componentWillMount() {
+        console.log("componentWillMount");
+    }
+
+    // 第二个阶段：render执行并装载至DOM后触发
+    componentDidMount() {
+        console.log("componentDidMount");
+    }
+
+    // 第三个阶段：Component被移出DOM前触发
+    componentWillUnmount() {
+        console.log("componentWillUnmount");
+    }
+
+    render() {
+        console.log("rendering");
+        return <div>
+            <button onClick={this.update}>{this.state.times}</button>
+        </div>
+    }
+}
+
+/**
+ * mount and unMount Component
+ */
+class ComponentWrapper extends React.Component {
+    mount() {
+        ReactDOM.render(<ComponentForMount/>, document.getElementById("container"))
+    }
+
+    unMount() {
+        ReactDOM.unmountComponentAtNode(document.getElementById("container"));
+    }
+
+    render() {
+        return <div>
+            <button onClick={this.mount.bind(this)}>Mount</button>
+            <button onClick={this.unMount.bind(this)}>UnMount</button>
+            <div id="container"></div>
+        </div>
+    }
+}
+
 export {
     StatelessComponent,
     ComponentExtendReact,
@@ -304,5 +364,6 @@ export {
     AccessNestedDataWithReactPropsChildren,
     ComponentWithPropTypesValidation,
     ComponentUseReactEventSystem,
-    ComponentRefs
+    ComponentRefs,
+    ComponentWrapper
 }

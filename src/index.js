@@ -56,3 +56,8 @@ ReactDOM.render(
     <App.ComponentRefs/>,
     document.getElementById('ComponentRefs')
 );
+
+ReactDOM.render(
+    <App.ComponentWrapper/>,
+    document.getElementById('ComponentWrapper')
+);
