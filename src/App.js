@@ -294,7 +294,7 @@ class Input extends React.Component {
 }
 
 /**
- * Component 加载到 DOM 中的生命周期
+ * Component 在 DOM 中的加载、卸载的生命周期
  */
 class ComponentForMount extends React.Component {
     constructor() {
@@ -312,22 +312,28 @@ class ComponentForMount extends React.Component {
     // 第一个阶段：装载至DOM前触发
     componentWillMount() {
         console.log("componentWillMount");
+        // 在 Render 之前执行
+        this.setState({m: 2})
     }
 
     // 第二个阶段：render执行并装载至DOM后触发
     componentDidMount() {
         console.log("componentDidMount");
+        // 装载到DOM后，添加定时器
+        this.interval = setInterval(this.update, 1000);
     }
 
     // 第三个阶段：Component被移出DOM前触发
     componentWillUnmount() {
         console.log("componentWillUnmount");
+        // 从DOM中卸载后，清理占用的资源
+        clearInterval(this.interval);
     }
 
     render() {
         console.log("rendering");
         return <div>
-            <button onClick={this.update}>{this.state.times}</button>
+            <button onClick={this.update}>{this.state.times * this.state.m}</button>
         </div>
     }
 }
