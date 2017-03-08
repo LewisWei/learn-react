@@ -419,6 +419,61 @@ ComponentUpdatesWhenNewPropsReceive.defaultProps = {
     val: 0
 };
 
+/**
+ * 使用 map 遍历 Array 中的数据
+ */
+class UseMapCreateComponentFromArray extends React.Component {
+
+    constructor() {
+        super();
+        // state 变化之后，会自动触发 render
+        this.state = {
+            items: [],
+            filter: ''
+        }
+    }
+
+    /**
+     * 装载至 DOM 前获取数据
+     */
+    componentWillMount() {
+        fetch('http://swapi.co/api/people/?format=json')
+            .then(response => response.json())
+            .then(({results:items}) => this.setState({items}))
+    }
+
+    /**
+     * 定义绑定至 input 的事件函数
+     * @param e
+     */
+    filter(e) {
+        this.setState({
+            filter: e.target.value.toLowerCase()
+        })
+    }
+
+    render() {
+        let items = this.state.items;
+        // 过滤数据
+        if (this.state.filter) {
+            items = items.filter(
+                item => item.name.toLowerCase().includes(this.state.filter)
+            )
+        }
+        // 通过 map 遍历数据，每条数据必须有一个 key
+        return <div>
+            <hr/>
+            <input type="text" onChange={this.filter.bind(this)}/>
+            {items.map(item =>
+                <Person key={item.name} person={item}/>
+            )}
+            <hr/>
+        </div>
+    }
+}
+
+const Person = (props) => <p>{props.person.name}</p>;
+
 export {
     StatelessComponent,
     ComponentExtendReact,
@@ -432,5 +487,6 @@ export {
     ComponentUseReactEventSystem,
     ComponentRefs,
     ComponentWrapper,
-    ComponentUpdatesWhenNewPropsReceive
+    ComponentUpdatesWhenNewPropsReceive,
+    UseMapCreateComponentFromArray
 }

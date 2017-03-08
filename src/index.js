@@ -66,3 +66,8 @@ ReactDOM.render(
     <App.ComponentUpdatesWhenNewPropsReceive/>,
     document.getElementById('ComponentUpdatesWhenNewPropsReceive')
 );
+
+ReactDOM.render(
+    <App.UseMapCreateComponentFromArray/>,
+    document.getElementById('UseMapCreateComponentFromArray')
+);
