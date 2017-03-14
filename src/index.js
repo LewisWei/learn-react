@@ -71,3 +71,8 @@ ReactDOM.render(
     <App.UseMapCreateComponentFromArray/>,
     document.getElementById('UseMapCreateComponentFromArray')
 );
+
+ReactDOM.render(
+    <App.HigherOrderComponents/>,
+    document.getElementById('HigherOrderComponents')
+);

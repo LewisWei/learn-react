@@ -474,6 +474,69 @@ class UseMapCreateComponentFromArray extends React.Component {
 
 const Person = (props) => <p>{props.person.name}</p>;
 
+/**
+ * Higher Order Components
+ * 为内部的 Component 增加状态或行为
+ * @param InnerComponent
+ * @constructor
+ */
+const HOC = (InnerComponent) => class extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            count: 0
+        }
+    }
+
+    update() {
+        this.setState({
+            count: this.state.count + 1
+        })
+    }
+
+    componentWillMount() {
+        console.log("HOC mount")
+        console.log(this.props);
+    }
+
+    render() {
+        // 将状态、属性、行为 传入 InnerComponent
+        return <InnerComponent
+            {...this.props}
+            {...this.state}
+            update={this.update.bind(this)}
+        />
+    }
+};
+
+/**
+ * HOC 对外的 Component
+ */
+class HigherOrderComponents extends React.Component {
+    render() {
+        return <div>
+            <ButtonForHOC>ButtonForHOC</ButtonForHOC>
+            <hr/>
+            <LabelHOC>LabelForHOC</LabelHOC>
+        </div>
+    }
+}
+
+class LabelForHOC extends React.Component {
+    componentWillMount() {
+        console.log("label component mount")
+    }
+
+    render() {
+        return <label onMouseMove={this.props.update}>{this.props.children}-{this.props.count}</label>
+    }
+}
+
+// 将内部组件嵌入 HOC
+const LabelHOC = HOC(LabelForHOC);
+const ButtonForHOC = HOC((props) => <button onClick={props.update}>{props.children}-{props.count}</button>);
+
 export {
     StatelessComponent,
     ComponentExtendReact,
@@ -488,5 +551,6 @@ export {
     ComponentRefs,
     ComponentWrapper,
     ComponentUpdatesWhenNewPropsReceive,
-    UseMapCreateComponentFromArray
+    UseMapCreateComponentFromArray,
+    HigherOrderComponents
 }
