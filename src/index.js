@@ -76,3 +76,8 @@ ReactDOM.render(
     <App.HigherOrderComponents/>,
     document.getElementById('HigherOrderComponents')
 );
+
+ReactDOM.render(
+    <App.JSXLiveCompilerComponent/>,
+    document.getElementById('JSXLiveCompilerComponent')
+);

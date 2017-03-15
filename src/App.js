@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import '././App.css';
 
 /**
  * 创建 stateless component
@@ -516,6 +517,7 @@ const HOC = (InnerComponent) => class extends React.Component {
 class HigherOrderComponents extends React.Component {
     render() {
         return <div>
+            <h1>HigherOrderComponents</h1>
             <ButtonForHOC>ButtonForHOC</ButtonForHOC>
             <hr/>
             <LabelHOC>LabelForHOC</LabelHOC>
@@ -537,6 +539,49 @@ class LabelForHOC extends React.Component {
 const LabelHOC = HOC(LabelForHOC);
 const ButtonForHOC = HOC((props) => <button onClick={props.update}>{props.children}-{props.count}</button>);
 
+/**
+ * JSX 编译器
+ */
+class JSXLiveCompilerComponent extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            input: '/* add your jsx here */',
+            output: '',
+            err: ''
+        }
+    }
+
+    update(e) {
+        let code = e.target.value;
+        try {
+            this.setState({
+                output: window.Babel.transform(code, {presets: ['es2015', 'react']}).code,
+                err: ''
+            })
+        } catch (err) {
+            this.setState({
+                err: err.message
+            })
+        }
+    }
+
+    render() {
+        return <div>
+            <header>{this.state.err}</header>
+            <div className="container">
+                <textarea
+                    onChange={this.update.bind(this)}
+                    defaultValue={this.state.input}
+                />
+                <pre>
+                    {this.state.output}
+                </pre>
+            </div>
+        </div>
+    }
+}
+
 export {
     StatelessComponent,
     ComponentExtendReact,
@@ -552,5 +597,6 @@ export {
     ComponentWrapper,
     ComponentUpdatesWhenNewPropsReceive,
     UseMapCreateComponentFromArray,
-    HigherOrderComponents
+    HigherOrderComponents,
+    JSXLiveCompilerComponent
 }
