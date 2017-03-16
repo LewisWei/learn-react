@@ -675,33 +675,91 @@ class Buttons extends React.Component {
     }
 }
 
+/**
+ * 可复用的组件
+ */
 class ReusableComponent extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            red: 0,
+            green: 0,
+            blue: 0
+        };
+        this.update = this.update.bind(this);
+    }
+
+    update(e) {
+        // 通过 refs 访问子组件
+        this.setState({
+            red: ReactDOM.findDOMNode(this.refs.red.refs.inp).value,
+            blue: ReactDOM.findDOMNode(this.refs.blue.refs.inp).value,
+            green: ReactDOM.findDOMNode(this.refs.green.refs.inp).value
+        })
+    }
+
     render() {
         return <div>
             <h1>ReusableComponent</h1>
-            <NumInput></NumInput>
+            <NumInput
+                ref="red"
+                label="Red"
+                type="range"
+                min={0}
+                max={255}
+                step={1}
+                val={this.state.red}
+                update={this.update}
+            />
+
+            <NumInput
+                ref="green"
+                label="Green"
+                type="number"
+                min={0}
+                max={255}
+                step={2}
+                val={this.state.green}
+                update={this.update}
+            />
+
+            <NumInput
+                ref="blue"
+                label="Blue"
+                type="range"
+                min={0}
+                max={255}
+                step={1}
+                val={this.state.blue}
+                update={this.update}
+            />
         </div>
     }
-
 }
 
 class NumInput extends React.Component {
-
     render() {
+        let label = this.props.label !== '' ?
+            <label>{this.props.label} - {this.props.val}</label> : '';
         return <div>
             <input
+                ref="inp"
                 type={this.props.type}
                 min={this.props.min}
                 max={this.props.max}
                 step={this.props.step}
-                defaultValue={this.props.defaultValue}
+                defaultValue={this.props.val}
                 onChange={this.props.update}
             />
-            {this.props.label}
+            {label}
         </div>
     }
 }
 
+/**
+ * 定义原型
+ * @type {{min: *, max: *, step: *, defaultValue: *, label: *, type: *, update: *}}
+ */
 NumInput.propTypes = {
     min: React.PropTypes.number,
     max: React.PropTypes.number,
@@ -716,7 +774,7 @@ NumInput.defaultProps = {
     min: 0,
     max: 255,
     step: 1,
-    defaultValue: 0,
+    val: 0,
     label: '',
     type: 'range'
 };
