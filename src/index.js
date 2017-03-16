@@ -86,3 +86,8 @@ ReactDOM.render(
     <App.TryReactChildrenUtilities/>,
     document.getElementById('TryReactChildrenUtilities')
 );
+
+ReactDOM.render(
+    <App.ExtendChildrenByCloneElement/>,
+    document.getElementById('ExtendChildrenByCloneElement')
+);

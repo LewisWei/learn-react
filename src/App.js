@@ -628,6 +628,49 @@ class Parent extends React.Component {
     }
 }
 
+/**
+ * 通过 React.cloneElement 为元素添加事件
+ */
+class ExtendChildrenByCloneElement extends React.Component {
+    render() {
+        return <Buttons>
+            <button value='A'>a</button>
+            <button value="B">b</button>
+            <button value="C">c</button>
+            <button value="D">d</button>
+        </Buttons>
+    }
+}
+
+class Buttons extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            selected: 'none'
+        }
+    }
+
+    selectItem(selected) {
+        this.setState({
+            selected
+        })
+    }
+
+    render() {
+        // 添加事件
+        let fn = child =>
+            React.cloneElement(child, {
+                onClick: this.selectItem.bind(this, child.props.value)
+            });
+        // 执行添加动作
+        let items = React.Children.map(this.props.children, fn);
+        return <div>
+            <h2>You have selected : {this.state.selected}</h2>
+            {items}
+        </div>
+    }
+}
+
 export {
     StatelessComponent,
     ComponentExtendReact,
@@ -645,5 +688,6 @@ export {
     UseMapCreateComponentFromArray,
     HigherOrderComponents,
     JSXLiveCompilerComponent,
-    TryReactChildrenUtilities
+    TryReactChildrenUtilities,
+    ExtendChildrenByCloneElement
 }
