@@ -260,6 +260,7 @@ class ComponentRefs extends React.Component {
     render() {
         return (
             <div>
+                <h1>ComponentRefs</h1>
                 <input
                     ref="a"
                     type="text"
@@ -353,6 +354,7 @@ class ComponentWrapper extends React.Component {
 
     render() {
         return <div>
+            <h1>Mount and unMount Component</h1>
             <button onClick={this.mount.bind(this)}>Mount</button>
             <button onClick={this.unMount.bind(this)}>UnMount</button>
             <div id="container"></div>
@@ -463,12 +465,11 @@ class UseMapCreateComponentFromArray extends React.Component {
         }
         // 通过 map 遍历数据，每条数据必须有一个 key
         return <div>
-            <hr/>
+            <h1>UseMapCreateComponentFromArray</h1>
             <input type="text" onChange={this.filter.bind(this)}/>
             {items.map(item =>
                 <Person key={item.name} person={item}/>
             )}
-            <hr/>
         </div>
     }
 }
@@ -633,12 +634,15 @@ class Parent extends React.Component {
  */
 class ExtendChildrenByCloneElement extends React.Component {
     render() {
-        return <Buttons>
-            <button value='A'>a</button>
-            <button value="B">b</button>
-            <button value="C">c</button>
-            <button value="D">d</button>
-        </Buttons>
+        return <div>
+            <h1>ExtendChildrenByCloneElement</h1>
+            <Buttons>
+                <button value='A'>a</button>
+                <button value="B">b</button>
+                <button value="C">c</button>
+                <button value="D">d</button>
+            </Buttons>
+        </div>
     }
 }
 
@@ -671,6 +675,52 @@ class Buttons extends React.Component {
     }
 }
 
+class ReusableComponent extends React.Component {
+    render() {
+        return <div>
+            <h1>ReusableComponent</h1>
+            <NumInput></NumInput>
+        </div>
+    }
+
+}
+
+class NumInput extends React.Component {
+
+    render() {
+        return <div>
+            <input
+                type={this.props.type}
+                min={this.props.min}
+                max={this.props.max}
+                step={this.props.step}
+                defaultValue={this.props.defaultValue}
+                onChange={this.props.update}
+            />
+            {this.props.label}
+        </div>
+    }
+}
+
+NumInput.propTypes = {
+    min: React.PropTypes.number,
+    max: React.PropTypes.number,
+    step: React.PropTypes.number,
+    defaultValue: React.PropTypes.number,
+    label: React.PropTypes.string,
+    type: React.PropTypes.oneOf(['number', 'range']),
+    update: React.PropTypes.func
+};
+
+NumInput.defaultProps = {
+    min: 0,
+    max: 255,
+    step: 1,
+    defaultValue: 0,
+    label: '',
+    type: 'range'
+};
+
 export {
     StatelessComponent,
     ComponentExtendReact,
@@ -689,5 +739,6 @@ export {
     HigherOrderComponents,
     JSXLiveCompilerComponent,
     TryReactChildrenUtilities,
-    ExtendChildrenByCloneElement
+    ExtendChildrenByCloneElement,
+    ReusableComponent
 }

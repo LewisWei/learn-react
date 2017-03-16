@@ -91,3 +91,8 @@ ReactDOM.render(
     <App.ExtendChildrenByCloneElement/>,
     document.getElementById('ExtendChildrenByCloneElement')
 );
+
+ReactDOM.render(
+    <App.ReusableComponent/>,
+    document.getElementById('ReusableComponent')
+);
