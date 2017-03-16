@@ -81,3 +81,8 @@ ReactDOM.render(
     <App.JSXLiveCompilerComponent/>,
     document.getElementById('JSXLiveCompilerComponent')
 );
+
+ReactDOM.render(
+    <App.TryReactChildrenUtilities/>,
+    document.getElementById('TryReactChildrenUtilities')
+);

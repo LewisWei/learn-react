@@ -556,7 +556,9 @@ class JSXLiveCompilerComponent extends React.Component {
         let code = e.target.value;
         try {
             this.setState({
-                output: window.Babel.transform(code, {presets: ['es2015', 'react']}).code,
+                output: window.Babel.transform(code,
+                    {presets: ['es2015', 'react']}
+                ).code,
                 err: ''
             })
         } catch (err) {
@@ -568,6 +570,7 @@ class JSXLiveCompilerComponent extends React.Component {
 
     render() {
         return <div>
+            <h1>JSXLiveCompilerComponent</h1>
             <header>{this.state.err}</header>
             <div className="container">
                 <textarea
@@ -579,6 +582,49 @@ class JSXLiveCompilerComponent extends React.Component {
                 </pre>
             </div>
         </div>
+    }
+}
+
+const TryReactChildrenUtilities = () => {
+
+    return <Parent>
+        <div className="ChildNameA"></div>
+        <div className="ChildNameB"></div>
+    </Parent>
+};
+
+class Parent extends React.Component {
+    render() {
+        // this.props.children 返回一个数组。如果只有一个 child 则返回一个对象，此时调用map会报错
+        try {
+            var items = this.props.children.map(child => child);
+            console.log(items);
+        } catch (err) {
+            // this.props.children.map is not a function
+            console.log(err.message);
+        }
+
+        // React.Children.map 方法可以在输入不确定的情况下，统一返回的结果类型为数组
+        items = React.Children.map(this.props.children, child => child);
+        console.log("React.Children.map(inputs,function) = " + items);
+
+        // React.Children.toArray
+        items = React.Children.toArray(this.props.children);
+        console.log("React.Children.toArray(inputs) = " + items);
+
+        // React.Children.forEach 迭代
+        React.Children.forEach(this.props.children, child => console.log(child.props.className));
+        console.log("React.Children.forEach(inputs,function)");
+
+        // React.Children.only 当返回的结果超过一个时，报错
+        try {
+            items = React.Children.only(this.props.children);
+            console.log("React.Children.only(inputs) = " + items);
+        } catch (err) {
+            // React.Children.only expected to receive a single React element child.
+            console.log(err.message);
+        }
+        return null;
     }
 }
 
@@ -598,5 +644,6 @@ export {
     ComponentUpdatesWhenNewPropsReceive,
     UseMapCreateComponentFromArray,
     HigherOrderComponents,
-    JSXLiveCompilerComponent
+    JSXLiveCompilerComponent,
+    TryReactChildrenUtilities
 }
